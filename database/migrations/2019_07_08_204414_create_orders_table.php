@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->string('name_receive');
             $table->string('phone_receive');
             $table->string('address_receive');
-            $table->string('payment_status');
+            $table->enum('payment_status', ['已付款', '未付款'])->nullable()->default('未付款');
             $table->enum('status', ['正常', '作廢'])->nullable()->default('正常');
             $table->timestamps();
 

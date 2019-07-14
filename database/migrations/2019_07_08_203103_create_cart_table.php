@@ -15,12 +15,14 @@ class CreateCartTable extends Migration
     {
         Schema::create('cart', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('member_id');
             $table->unsignedInteger('product_id');
             $table->integer('quantity');
             $table->boolean('is_next')->default(false);
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 
@@ -33,6 +35,7 @@ class CreateCartTable extends Migration
     {
         Schema::table('cart', function (Blueprint $table)
         {
+            $table->dropForeign(['member_id']);
             $table->dropForeign(['product_id']);
         });
 
