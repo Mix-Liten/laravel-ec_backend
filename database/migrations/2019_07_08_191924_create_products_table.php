@@ -21,9 +21,10 @@ class CreateProductsTable extends Migration
             $table->decimal('price_origin', 10, 2)->default(0.00);
             $table->string('unit')->default('個');
             $table->integer('qty')->default(0);
-            $table->text('description')->nullable();
+            $table->string('description')->nullable();
             $table->text('content')->nullable();
-            $table->boolean('is_active')->default(false);
+            $table->enum('prom_status', ['無', '新品', '促銷', '精選', '活動'])->nullable()->default('無');
+            $table->boolean('is_active')->default(true);
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();
