@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Route::prefix('v1')->group(function () {
+//     Route::get('users', function () {
+//         // "/api/v1/users" URL
+//     });
+
+//     Route::get('list', function () {
+//         // "/api/v1/list" URL
+//     });
+// });
