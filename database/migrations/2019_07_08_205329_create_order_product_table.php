@@ -21,8 +21,8 @@ class CreateOrderProductTable extends Migration
             $table->integer('price');
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('restrict');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
+            $table->foreign('order_id')->references('id')->on('order')->onDelete('restrict');
+            $table->foreign('product_id')->references('id')->on('product')->onDelete('restrict');
         });
     }
 

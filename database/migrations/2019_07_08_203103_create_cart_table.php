@@ -21,8 +21,8 @@ class CreateCartTable extends Migration
             $table->boolean('is_next')->default(false);
             $table->timestamps();
 
-            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('member_id')->references('id')->on('member')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
         });
     }
 

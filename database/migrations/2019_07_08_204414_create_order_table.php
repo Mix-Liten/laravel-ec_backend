@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrdersTable extends Migration
+class CreateOrderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('order', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('member_id');
             $table->unsignedInteger('coupon_id');
@@ -25,8 +25,8 @@ class CreateOrdersTable extends Migration
             $table->enum('status', ['正常', '作廢'])->nullable()->default('正常');
             $table->timestamps();
 
-            $table->foreign('member_id')->references('id')->on('members')->onDelete('restrict');
-            $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('restrict');
+            $table->foreign('member_id')->references('id')->on('member')->onDelete('restrict');
+            $table->foreign('coupon_id')->references('id')->on('coupon')->onDelete('restrict');
         });
     }
 
@@ -37,12 +37,12 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::table('orders', function (Blueprint $table)
+        Schema::table('order', function (Blueprint $table)
         {
             $table->dropForeign(['member_id']);
             $table->dropForeign(['coupon_id']);
         });
 
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('order');
     }
 }

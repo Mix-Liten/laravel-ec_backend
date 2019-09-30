@@ -20,7 +20,7 @@ class CreateProductImageTable extends Migration
             $table->string('path');
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
         });
     }
 
@@ -31,10 +31,10 @@ class CreateProductImageTable extends Migration
      */
     public function down()
     {
-        Schema::table('product_images', function (Blueprint $table) {
+        Schema::table('product_image', function (Blueprint $table) {
             $table->dropForeign(['product_id']);
         });
 
-        Schema::dropIfExists('product_images');
+        Schema::dropIfExists('product_image');
     }
 }

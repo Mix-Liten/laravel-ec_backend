@@ -32,6 +32,6 @@ class CreateCouponTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coupons');
+        Schema::dropIfExists('coupon');
     }
 }
