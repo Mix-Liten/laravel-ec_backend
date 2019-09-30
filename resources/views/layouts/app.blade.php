@@ -34,7 +34,10 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('products.index') }}">{{ __('Product') }}</a>
+                            <a class="nav-link" href="{{ route('product.index') }}">{{ __('Product') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('category.index') }}">{{ __('Category') }}</a>
                         </li>
                     </ul>
 

@@ -36933,6 +36933,26 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // window
 //     el: '#app',
 // });
 
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
+
+deleteCategory = function deleteCategory(id) {
+  var result = confirm('Do you want to delete the category?');
+
+  if (result) {
+    var actionUrl = "/category/".concat(id);
+    $.post(actionUrl, {
+      _method: 'delete'
+    }).done(function () {
+      location.href = '/category';
+    });
+  }
+};
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -37011,8 +37031,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\user\Desktop\ECBackend\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\user\Desktop\ECBackend\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/vagrant/code/Vue_EC_Backend/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/vagrant/code/Vue_EC_Backend/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -27,9 +27,12 @@ $hasImage = $images->exists;
                 <img width="100%" src="{{ $images->path }}" alt="product_image">
                 @endif
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="customFile" name="product_images" multiple>
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <input type="file" class="custom-file-input" id="fileInput" name="product_images" multiple accept="image/*">
+                    <label class="custom-file-label" for="fileInput">Choose image files</label>
                 </div>
+                <pre id="fileDisplayArea">
+                    <div class="wrapper"></div>
+                </pre>
             </div>
         </div>
         <div class="col-md-6">
@@ -105,3 +108,123 @@ $hasImage = $images->exists;
         </div>
     </div>
 </form>
+
+<style>
+#fileDisplayArea {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#fileDisplayArea .wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding-right: 3px;
+  padding-left: 3px;
+}
+
+#fileDisplayArea .wrapper .block {
+  width: 33%;
+  /* margin: 0px 1px 5px 0px; */
+  display: flex;
+  justify-content: center;
+  /* border: 0.5px dashed #9561e2; */
+  /* padding-top: 2px;
+  padding-bottom: 2px; */
+  position: relative;
+}
+
+#fileDisplayArea .wrapper .block img {
+  height: 200px;
+  max-width: 100%;
+  z-index: 2;
+}
+
+#fileDisplayArea .wrapper span {
+  position: relative;
+}
+
+#fileDisplayArea .wrapper span::before {
+  content: '❌';
+  position: absolute;
+  top: -1rem;
+  right: -0.5rem;
+  font-size: 1.5rem;
+  z-index: 10;
+  cursor: pointer;
+}
+
+#fileDisplayArea .wrapper span:hover::before {
+  transform: scale(1.3);
+}
+</style>
+
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script> --}}
+<script>
+var fileInput = document.querySelector('#fileInput');
+var fileDisplayArea = document.querySelector('#fileDisplayArea .wrapper');
+var imageId = 0;
+
+fileInput.addEventListener('change', function(e) {
+  var files = [...fileInput.files];
+  var filesLenBefore = files.length;
+  files = files.filter(file => validFileType(file));
+  var filesLenAfter = files.length;
+  if (filesLenBefore !== filesLenAfter) {
+    alert('部分檔案為非預期格式，已從資料中剔除！');
+  }
+  fileDisplayArea.innerHTML = '';
+  files.forEach(file => {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var areaBlock = document.createElement('div');
+      var link = document.createElement('a');
+      var img = document.createElement('img');
+      var del = document.createElement('span');
+      del.setAttribute('data-id', imageId++);
+      areaBlock.classList.add('block');
+      img.src = reader.result;
+      link.setAttribute('href', reader.result);
+      link.setAttribute('data-title', `${file.name}：${returnFileSize(file.size)}`);
+    //   link.setAttribute('data-lightbox', 'imgUpload');
+      link.appendChild(img);
+      areaBlock.appendChild(link);
+      areaBlock.appendChild(del);
+      fileDisplayArea.append(areaBlock);
+
+      del.addEventListener('click', function(evt) {
+        evt.preventDefault();
+        var id = this.getAttribute('data-id');
+        var blocks = document.querySelectorAll('#fileDisplayArea .block span');
+        var doubleCheck = confirm('Did you really want to delete this image?');
+        if (doubleCheck) {
+          blocks.forEach(block => {
+            if (block.getAttribute('data-id') == id) {
+              block.parentElement.remove();
+            }
+          })
+        }
+      })
+    }
+    reader.readAsDataURL(file);
+  })
+});
+
+function returnFileSize(number) {
+  if (number < 1024) {
+    return `${number}bytes`;
+  } if (number > 1024 && number < 1048576) {
+    return `${(number / 1024).toFixed(1)}KB`;
+  } if (number > 1048576) {
+    return `${(number / 1048576).toFixed(1)}MB`;
+  }
+}
+
+function validFileType(file) {
+  const acceptFileTypes = /^image\//;
+  const isValidFileType = acceptFileTypes.test(file.type);
+  return isValidFileType;
+}
+</script>
