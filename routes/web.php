@@ -23,5 +23,6 @@ Auth::routes(['verify' => true]);
 Route::middleware(['verified'])->group(function () {
     Route::get('home', 'HomeController@index')->name('home');
 });
-Route::resource('products', 'ProductController');
+Route::resource('product', 'ProductController');
+Route::resource('category', 'CategoryController')->except(['show']);
 
