@@ -4,15 +4,15 @@
 <section class="container">
     <div class="row">
         <div class="col-md-12 p-0">
-            <h4 class="text-uppercase">Create Product</h4>
+            <h4 class="text-uppercase">Edit Product</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{ route('products.index') }}">Products List</a>
+                    <a href="{{ route('product.index') }}">Product List</a>
                 </li>
-                <li class="breadcrumb-item active">Create Product</li>
+                <li class="breadcrumb-item active">Edit Product</li>
             </ol>
         </div>
     </div>
@@ -22,7 +22,7 @@
 @section('content')
 <div class="page-content">
     <div class="container">
-        @include('products._form')
+        @include('product._form', ['product' => $product])
     </div>
 </div>
 @endsection
