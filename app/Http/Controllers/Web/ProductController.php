@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Http\Requests\storeProductRequest;
+use App\Models\Category;
 use App\Models\Product;
-use App\Models\Product_Image;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
@@ -16,11 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // $products = Product::all();
-        $products = [];
-        $product = new Product;
-        $product->id = 1;
-        $products[] = $product;
+        $products = Product::paginate(10);
         return view('product.index', ['products' => $products]);
     }
 
@@ -32,32 +31,25 @@ class ProductController extends Controller
     public function create()
     {
         $product = new Product;
-        $images = new Product_Image;
-        // $categories = Category::all();
-        // return view('posts.create', ['post' => $post, 'categories' => $categories]);
-        return view('product.create', ['product' => $product, 'images' => $images]);
+        $categories = Category::all();
+        return view('product.create', compact(['product', 'categories']));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\storeProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storeProductRequest $request)
     {
-        //
-    }
+        $product = Product::create($request->all());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
+        if($request->has('image')) {
+            $this->storeImage($product);
+        }
+
+        return redirect('product');
     }
 
     /**
@@ -68,31 +60,69 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit', ['product' => $product]);
-        // $categories = Category::all();
-        // return view('products.edit', ['product' => $product, 'categories' => $categories]);
+         $categories = Category::all();
+         return view('product.edit', compact(['product','categories']));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\storeProductRequest  $request
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(storeProductRequest $request, Product $product)
     {
-        //
+        $product->update(collect($request)->except('image')->toArray());
+
+        if($request->has('image')) {
+            $this->deleteImage($product);
+            $this->storeImage($product);
+        }
+
+        return redirect('product');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return void
+     * @throws \Exception
      */
     public function destroy(Product $product)
     {
-        //
+        $this->deleteImage($product);
+        $product->delete();
+    }
+
+    /**
+     * Process image upload
+     *
+     * @param  \App\Models\Product  $product
+     * @return void
+     */
+    private function storeImage(Product $product)
+    {
+        $product->update([
+            'image' => request()->image->store('uploads', 'public'),
+        ]);
+
+        $image = Image::make(public_path('storage/' . $product->image))->fit(500,500);
+        $image->save();
+    }
+
+    /**
+     * Delete image if exists
+     *
+     * @param  \App\Models\Product  $product
+     * @return void
+     */
+    private function deleteImage(Product $product)
+    {
+        $image_path = public_path('storage/' . $product->image);
+        if(File::exists($image_path)) {
+            File::delete($image_path);
+        }
     }
 }
