@@ -34,10 +34,10 @@
             <tbody>
                 @foreach ($categories as $key => $category)
                     <tr>
-                    <th scope="row">{{ $category->id }}</th>
-                        <td>{{ $category->name }}</td>
-                        <td>{{ $category->sort_no }}</td>
-                        <td>
+                    <th scope="row" class="align-middle">{{ $category->id }}</th>
+                        <td scope="row" class="align-middle">{{ $category->name }}</td>
+                        <td scope="row" class="align-middle">{{ $category->sort_no }}</td>
+                        <td scope="row" class="align-middle">
                             <a href="{{ route('category.edit', ['category' => $category->id]) }}" class="btn btn-secondary">Edit</a>
                             <button type="button" class="btn btn-danger" onclick="deleteCategory({{ $category->id }})">Delete</button>
                         </td>
@@ -46,13 +46,7 @@
             </tbody>
         </table>
         <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
+            {{ $categories->links() }}
         </nav>
     </div>
 </div>

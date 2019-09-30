@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all()->sortBy('sort_no');
+        $categories = Category::orderBy('sort_no')->paginate(5);
         return view('category.index', ['categories' => $categories]);
     }
 
@@ -42,7 +42,7 @@ class CategoryController extends Controller
         $category->fill($request->all());
         $category->save();
 
-        return redirect('/category');
+        return redirect('category');
     }
 
     /**
@@ -68,7 +68,7 @@ class CategoryController extends Controller
         $category->fill($request->all());
         $category->save();
 
-        return redirect('/category');
+        return redirect('category');
     }
 
     /**

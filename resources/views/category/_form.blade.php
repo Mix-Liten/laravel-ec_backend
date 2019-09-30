@@ -28,7 +28,7 @@ if(!empty($category)){
             </div>
             <div class="form-group">
                 <label>排序</label>
-                <input type="number" class="form-control w-25 text-right" name="sort_no" value="{{ $category->sort_no }}">
+                <input type="number" class="form-control w-25 text-right" name="sort_no" value="{{ $category->sort_no }}" required>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>

@@ -36953,6 +36953,19 @@ deleteCategory = function deleteCategory(id) {
   }
 };
 
+deleteProduct = function deleteProduct(id) {
+  var result = confirm('Do you want to delete the product?');
+
+  if (result) {
+    var actionUrl = "/product/".concat(id);
+    $.post(actionUrl, {
+      _method: 'delete'
+    }).done(function () {
+      location.href = '/product';
+    });
+  }
+};
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
