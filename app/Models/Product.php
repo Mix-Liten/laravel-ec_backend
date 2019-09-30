@@ -6,12 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $table = 'products';
+    protected $table = 'product';
 
-    protected $fillable = [
-        'category_id', 'name', 'price', 'price_origin', 'unit',
-        'qty', 'description', 'content', 'is_active'
-    ];
+    protected $guarded = [];
 
     // public function user()
     // {
@@ -21,11 +18,6 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo('App\Models\Category');
-    }
-
-    public function images()
-    {
-        return $this->hasMany('App\Models\Product_Image');
     }
 
     public function cart()

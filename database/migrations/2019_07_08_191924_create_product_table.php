@@ -23,7 +23,7 @@ class CreateProductTable extends Migration
             $table->integer('qty')->default(0);
             $table->string('description')->nullable();
             $table->text('content')->nullable();
-            $table->enum('prom_status', ['無', '新品', '促銷', '精選', '活動'])->nullable()->default('無');
+            $table->text('image')->nullable();
             $table->boolean('is_active')->default(true);
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
